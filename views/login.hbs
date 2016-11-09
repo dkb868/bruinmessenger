@@ -16,6 +16,11 @@
 
     <!-- Custom CSS -->
     <link href="/css/styles.css" rel="stylesheet">
+    <style>
+    input {
+        color: black;
+    }
+    </style>
 
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -36,14 +41,12 @@
     <header id="top" class="header">
         <div class="text-vertical-center">
             <h1>Bruin Messenger</h1>
-            <h3>The next big chat app</h3>
+            <h3>The next big anonymous chat app</h3>
             <br>
-            <a href="/auth/facebook">
-            <button class="loginBtn loginBtn--facebook">
-                Login with Facebook
-            </button>
-        </a>
-
+            <form action="/auth/login" method="post">
+                <input type="text" name="username" placeholder="someone" />
+                <button class="btn btn-primary" type="submit">Login</button>
+            </form>
         </div>
     </header>
 

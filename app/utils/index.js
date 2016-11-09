@@ -2,7 +2,8 @@ const crypto = require('crypto')
 
 // Middleware that checks if user is authenticated
 let isAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) {
+  console.log(req.session)
+  if (req.session.isAuthenticated) {
     next()
   } else {
     res.redirect('/')
@@ -29,7 +30,8 @@ let addUserToRoom = (allrooms, data, socket) => {
   let getRoom = findRoomById(allrooms, data.roomID)
   if (getRoom !== undefined) {
     // Get the active user's ID (ObjectID)
-    let userID = socket.request.session.passport.user
+    let userID = socket.request.session.user.profileId
+    console.log("USER ID", userID)
     // Check to see if this user already exists in the chatroom
     let checkUser = getRoom.users.findIndex((element, index, array) => element.userID === userID)
 

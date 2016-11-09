@@ -1,6 +1,5 @@
 module.exports = () => {
   const router = require('express').Router()
-  const passport = require('passport')
   const utils = require('../utils')
   const config = require('../config')
 
@@ -11,7 +10,7 @@ module.exports = () => {
 
   router.get('/rooms', utils.isAuthenticated, (req, res, next) => {
     res.render('rooms', {
-      user: req.user,
+      user: req.session.user,
       host: config.host
     })
   })
@@ -24,7 +23,7 @@ module.exports = () => {
       return next()
     } else {
       res.render('chatroom', {
-        user: req.user,
+        user: req.session.user,
         host: config.host,
         room: getRoom.room,
         roomID: getRoom.roomID
@@ -32,19 +31,21 @@ module.exports = () => {
     }
   })
 
-  // auth request
-  router.get('/auth/facebook', passport.authenticate('facebook'))
-
-  // auth callback
-  router.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    successRedirect: '/rooms',
-    failureRedirect: '/'
-  }))
+  router.post('/auth/login', (req, res) => {
+    req.session.user = {
+      profileId: utils.randomHex(),
+      fullName: req.body.username,
+      profilePic: 'https://unsplash.it/200/300/?random'
+    }
+    req.session.isAuthenticated = true
+    console.log(req.session.user)
+    res.redirect('/rooms')
+  })
 
   // logout
   router.get('/logout', (req, res, next) => {
-    // passport method that clears the session
-    req.logout()
+    req.session.user = null
+    req.session.isAuthenticated = false
     res.redirect('/')
   })
 

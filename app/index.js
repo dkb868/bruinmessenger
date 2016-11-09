@@ -1,5 +1,3 @@
-// Activate Social Auth
-require('./auth')()
 
 // Create an IO Server instance
 
